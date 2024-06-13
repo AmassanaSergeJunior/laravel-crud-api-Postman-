@@ -13,11 +13,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return PostResource::collection($posts);
     }
 
     /**
      * Show the form for creating a new resource.
+      * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -26,10 +28,14 @@ class PostController extends Controller
 
     /**
      * Store a newly created resource in storage.
+       * @param  \Illuminate\Http\Request  $request
+       * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $posts = Post::create($request->all());
+        
+        return new PostResource($posts);
     }
 
     /**
@@ -42,6 +48,8 @@ class PostController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+        * @param  \App\Models\Post  $post
+        * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
     {
@@ -50,17 +58,26 @@ class PostController extends Controller
 
     /**
      * Update the specified resource in storage.
+      * @param  \Illuminate\Http\Request  $request
+      * @param  \App\Models\Post  $post
+      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $post->update($request->all());
+        
+        return new PostResource($post);
     }
 
     /**
      * Remove the specified resource from storage.
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return response(null, 204);
     }
 }
